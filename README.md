@@ -1,99 +1,55 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 채팅 서버
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+이 프로젝트는 `NestJS`와 `Socket.io`를 사용하여 간단한 채팅 서버를 구현한 것입니다. 사용자는 웹 브라우저를 통해 실시간 채팅에 참여할 수 있습니다. 이 서버는 여러 사용자가 동시에 연결되어 메시지를 주고받을 수 있도록 설계되었습니다. 서버와 클라이언트 간의 실시간 양방향 통신은 `Socket.io`를 통해 처리되며, 클라이언트는 HTML 파일을 통해 채팅을 할 수 있습니다.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 사용한 기술
 
-## Description
+- **NestJS**: Node.js의 프레임워크로, 서버 사이드 애플리케이션을 구축하는 데 사용됩니다. 이 프로젝트에서는 서버 로직과 WebSocket 통신을 처리합니다.
+- **Socket.io**: 실시간 웹 애플리케이션을 위한 양방향 이벤트 기반 라이브러리로, 클라이언트와 서버 간의 실시간 데이터 송수신을 처리합니다.
+- **TypeScript**: JavaScript의 상위 집합 언어로, 타입 시스템을 통해 코드의 안정성을 높이고 가독성을 향상시킵니다.
+- **HTML / CSS**: 클라이언트 측 UI를 구성하며, 사용자가 입력을 하고 채팅 메시지를 볼 수 있는 간단한 인터페이스를 제공합니다.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 프로젝트 설명
 
-## Project setup
+이 채팅 서버는 사용자가 접속하여 실시간으로 메시지를 주고받을 수 있는 간단한 채팅 애플리케이션입니다. `NestJS`를 사용하여 서버 사이드 로직을 구성하고, `Socket.io`를 사용해 클라이언트와 서버 간의 실시간 양방향 통신을 처리합니다. 사용자는 간단한 입력 창을 통해 사용자 이름을 설정하고, 채팅방에 입장하여 메시지를 전송할 수 있습니다. 메시지는 서버에서 처리되어 채팅방에 참여한 다른 사용자에게 전달됩니다.
 
-```bash
-$ npm install
-```
+## API 엔드포인트
 
-## Compile and run the project
+이 프로젝트는 `Socket.io`를 사용하여 실시간 채팅을 처리합니다. 주요 이벤트는 다음과 같습니다:
 
-```bash
-# development
-$ npm run start
+- **`join`**: 사용자가 채팅에 참여할 때 서버에 보내는 이벤트.
+  - **전송 데이터**: 사용자의 `username`.
+  - **서버 처리**: 사용자가 채팅에 참여한 것을 모든 클라이언트에게 알림.
 
-# watch mode
-$ npm run start:dev
+- **`message`**: 사용자가 채팅에서 보낸 메시지를 서버에 전송합니다.
+  - **전송 데이터**: `sender` (사용자 이름), `message` (메시지 내용).
+  - **서버 처리**: 메시지를 다른 사용자에게 전달합니다.
 
-# production mode
-$ npm run start:prod
-```
+## 디렉토리 구조
 
-## Run tests
+- **`src/chat/`**: 채팅 기능과 관련된 로직을 포함하는 모듈.
+- **`public/`**: 클라이언트에서 사용할 정적 파일 (HTML 파일).
+- **`dist/`**: 빌드된 파일들이 저장되는 디렉토리.
+- **`main.ts`**: NestJS 서버를 시작하는 파일.
 
-```bash
-# unit tests
-$ npm run test
+## 설치된 주요 패키지
 
-# e2e tests
-$ npm run test:e2e
+- **@nestjs/common**: NestJS의 기본 모듈.
+- **@nestjs/core**: NestJS 애플리케이션의 핵심 모듈.
+- **@nestjs/serve-static**: 정적 파일을 제공하는 NestJS 모듈.
+- **socket.io**: 실시간 양방향 통신을 위한 라이브러리.
+- **@nestjs/websockets**: WebSocket을 통해 실시간 통신을 지원하는 NestJS 모듈.
+- **typescript**: TypeScript를 사용하여 개발.
 
-# test coverage
-$ npm run test:cov
-```
+## 추가적인 기능 개선
 
-## Deployment
+- **사용자 인증 기능**: 사용자가 로그인하고 인증 후 채팅에 참여할 수 있도록 기능을 추가할 수 있습니다.
+- **메시지 저장 기능**: MongoDB나 MySQL을 사용하여 채팅 메시지를 저장하고, 과거 메시지를 볼 수 있도록 하는 기능을 추가할 수 있습니다.
+- **채팅방 기능**: 여러 개의 채팅방을 생성하고, 사용자가 채팅방을 선택하여 참여할 수 있는 기능을 추가할 수 있습니다.
+- **알림 기능**: 사용자가 메시지를 받을 때 알림을 보내주는 기능을 추가할 수 있습니다.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 개발 환경
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- **Node.js**: 16 이상.
+- **npm**: 7 이상.
+- **TypeScript**: 4 이상.
